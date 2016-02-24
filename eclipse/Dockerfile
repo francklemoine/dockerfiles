@@ -19,7 +19,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 USER root
 
 RUN set -x \
-	&& wget -q -O /tmp/eclipse.tar.gz http://eclipse.c3sl.ufpr.br/technology/epp/downloads/release/mars/1/eclipse-java-mars-1-linux-gtk-x86_64.tar.gz \
+	&& wget -q -O /tmp/eclipse.tar.gz http://download.eclipse.org/technology/epp/downloads/release/mars/1/eclipse-java-mars-1-linux-gtk-x86_64.tar.gz \
 	&& tar -xf /tmp/eclipse.tar.gz -C /opt \
 	&& rm /tmp/eclipse.tar.gz
 
