@@ -7,11 +7,7 @@
 #                         -v /etc/timezone:/etc/timezone:ro \
 #                         -v /tmp/.X11-unix:/tmp/.X11-unix \
 #                         -e DISPLAY=unix$DISPLAY \
-#                         -v $(pwd)/docker-firefox-29/.cache/mozilla:/root/.cache/mozilla \
-#                         -v $(pwd)/docker-firefox-29/.mozilla:/root/.mozilla \
-#                         -v $(pwd)/docker-firefox-29/Downloads:/root/Downloads \
-#                         -v $(pwd)/docker-firefox-29/Pictures:/root/Pictures \
-#                         -v $(pwd)/docker-firefox-29/Torrents:/root/Torrents \
+#                         -v $(pwd)/docker-firefox-29:/home/developer \
 #                         flem/firefox-29
 
 
@@ -22,8 +18,6 @@ MAINTAINER Franck Lemoine <franck.lemoine@flem.fr>
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN set -x \
-	&& test -z ${http_proxy}  || /bin/echo -e "Acquire::http::proxy \"${http_proxy}\";\n" >>/etc/apt/apt.conf \
-	&& test -z ${https_proxy} || /bin/echo -e "Acquire::https::proxy \"${https_proxy}\";\n" >>/etc/apt/apt.conf \
 	&& sed -i.bak 's/\(debian [a-z]\+ main\)/\1 contrib/g' /etc/apt/sources.list \
 	&& apt-get -y update \
 	&& apt-get install -y \
@@ -49,9 +43,20 @@ RUN curl -sSL "https://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${FIREFO
 	&& mkdir -p /opt/firefox \
 	&& tar -xjf /tmp/firefox.tar.bz2 -C /opt/firefox --strip-components 1 \
 	&& rm /tmp/firefox.tar.bz2* \
-	&& ln -s /opt/firefox/firefox /usr/bin/firefox
+	&& ln -s /opt/firefox/firefox /usr/bin/firefox \
+	&& mkdir -p /home/developer \
+	&& echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd \
+	&& echo "developer:x:1000:" >> /etc/group \
+	&& echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer \
+	&& chmod 0440 /etc/sudoers.d/developer \
+	&& chown developer:developer -R /home/developer \
+	&& chown root:root /usr/bin/sudo && chmod 4755 /usr/bin/sudo
 
 COPY local.conf /etc/fonts/local.conf
+
+USER developer
+ENV HOME /home/developer
+WORKDIR /home/developer
 
 ENTRYPOINT [ "/usr/bin/firefox" ]
 

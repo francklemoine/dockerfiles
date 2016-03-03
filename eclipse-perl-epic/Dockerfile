@@ -6,7 +6,7 @@
 #                         -v /etc/timezone:/etc/timezone:ro \
 #                         -v /tmp/.X11-unix:/tmp/.X11-unix \
 #                         -e DISPLAY=unix$DISPLAY \
-#                         -v $(pwd)/docker-eclipse-perl-epic:/home/developper \
+#                         -v $(pwd)/docker-eclipse-perl-epic:/home/developer \
 #                         flem/eclipse-perl-epic
 
 
@@ -26,8 +26,6 @@ RUN buildDeps=' \
 		cpanminus \
 	' \
 	set -x \
-	&& test -z ${http_proxy}  || /bin/echo -e "Acquire::http::proxy \"${http_proxy}\";\n" >>/etc/apt/apt.conf \
-	&& test -z ${https_proxy} || /bin/echo -e "Acquire::https::proxy \"${https_proxy}\";\n" >>/etc/apt/apt.conf \
 	&& apt-get -y update \
 	&& apt-get -y upgrade \
 	&& apt-get install -y --no-install-recommends $buildDeps \
@@ -54,7 +52,6 @@ RUN buildDeps=' \
 	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars/,http://www.epic-ide.org/updates -installIU org.epic.feature.main.feature.group \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& apt-get clean autoclean \
-	&& rm -f /etc/apt/apt.conf \
 	&& rm -r /var/lib/apt/lists/* \
 	&& rm -rf /tmp/*
 

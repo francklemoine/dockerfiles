@@ -6,7 +6,7 @@
 #                         -v /etc/timezone:/etc/timezone:ro \
 #                         -v /tmp/.X11-unix:/tmp/.X11-unix \
 #                         -e DISPLAY=unix$DISPLAY \
-#                         -v $(pwd)/docker-eclipse:/home/developper \
+#                         -v $(pwd)/docker-eclipse:/home/developer \
 #                         flem/eclipse
 
 
@@ -24,12 +24,9 @@ RUN set -x \
 	&& rm /tmp/eclipse.tar.gz
 
 RUN set -x \
-	&& test -z ${http_proxy}  || /bin/echo -e "Acquire::http::proxy \"${http_proxy}\";\n" >>/etc/apt/apt.conf \
-	&& test -z ${https_proxy} || /bin/echo -e "Acquire::https::proxy \"${https_proxy}\";\n" >>/etc/apt/apt.conf \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends libxext-dev libxrender-dev libxtst-dev libgtk2.0-0 libcanberra-gtk-module sudo \
 	&& apt-get clean autoclean \
-	&& rm -f /etc/apt/apt.conf \
 	&& rm -r /var/lib/apt/lists/* \
 	&& rm -rf /tmp/*
 
