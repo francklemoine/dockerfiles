@@ -10,7 +10,7 @@
 #                         flem/eclipse
 
 
-FROM java:8-jdk
+FROM openjdk:8-jdk
 MAINTAINER Franck Lemoine <franck.lemoine@flem.fr>
 
 # properly setup debian sources
@@ -19,7 +19,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 USER root
 
 RUN set -x \
-	&& wget -q -O /tmp/eclipse.tar.gz http://download.eclipse.org/technology/epp/downloads/release/mars/1/eclipse-java-mars-1-linux-gtk-x86_64.tar.gz \
+	&& wget -q -O /tmp/eclipse.tar.gz http://download.eclipse.org/technology/epp/downloads/release/neon/2/eclipse-java-neon-2-linux-gtk-x86_64.tar.gz \
 	&& tar -xf /tmp/eclipse.tar.gz -C /opt \
 	&& rm /tmp/eclipse.tar.gz
 
@@ -46,4 +46,3 @@ ENV HOME /home/developer
 WORKDIR /home/developer
 
 ENTRYPOINT ["/usr/local/bin/eclipse.sh"]
-
