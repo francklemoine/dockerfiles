@@ -46,10 +46,10 @@ RUN buildDeps=' \
 	&& cpanm 'Net::FTP::File' \
 	&& cpanm 'XML::LibXML' \
 	&& cpanm 'Switch' \
-	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars/ -installIU org.eclipse.team.svn.revision.graph.feature.group \
-	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars/ -installIU org.eclipse.team.svn.resource.ignore.rules.jdt.feature.group \
-	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars/ -installIU org.eclipse.team.svn.feature.group \
-	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/mars/,http://www.epic-ide.org/updates -installIU org.epic.feature.main.feature.group \
+	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/ -installIU org.eclipse.team.svn.revision.graph.feature.group \
+	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/ -installIU org.eclipse.team.svn.resource.ignore.rules.jdt.feature.group \
+	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/ -installIU org.eclipse.team.svn.feature.group \
+	&& /opt/eclipse/eclipse -nosplash -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/releases/neon/,http://www.epic-ide.org/updates/testing -installIU org.epic.feature.main.feature.group \
 	&& apt-get purge -y --auto-remove $buildDeps \
 	&& apt-get clean autoclean \
 	&& rm -r /var/lib/apt/lists/* \
@@ -58,4 +58,3 @@ RUN buildDeps=' \
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
-
